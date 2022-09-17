@@ -7,10 +7,15 @@ use kube::{
 use serde_json::json;
 use tracing::*;
 
+// use std::fs;
+
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
     let client = Client::try_default().await.unwrap();
     let pods: Api<Pod> = Api::default_namespaced(client);
+
+    // let file = fs::read_to_string("test.yaml").unwrap();
+    // let yaml = serde_yaml::to_string(&file);
 
     let p: Pod = serde_json::from_value(json!({
         "apiVersion": "v1",
@@ -23,6 +28,8 @@ async fn main() -> anyhow::Result<()> {
             }],
         }
     }))?;
+
+    // let p: Pod = serde_json::from_value(json!());
 
     let pp = PostParams::default();
     match pods.create(&pp, &p).await {
