@@ -1,4 +1,4 @@
-// use k8s_openapi::api::core::v1::Pod;
+use k8s_openapi::api::core::v1::Pod;
 // use serde_json::json;
 // use tracing::*;
 
@@ -8,14 +8,15 @@
 //     Client,
 // };
 
-use kube::Client;
+use kube::{Api, Client};
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
     println!("Hello, world!");
     let client = Client::try_default().await?;
+    let pods: Api<Pod> = Api::default_namespaced(client);
 
-    axc_controller::create_runtime(client).await.unwrap();
+    axc_controller::create_runtime(&pods).await.unwrap();
 
     Ok(())
 }

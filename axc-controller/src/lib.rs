@@ -7,10 +7,7 @@ use kube::{
 use serde_json::json;
 use tracing::*;
 
-pub async fn create_runtime(client: Client) -> anyhow::Result<()> {
-    // Manage pods
-    let pods: Api<Pod> = Api::default_namespaced(client);
-
+pub async fn create_runtime(pods: &Api<Pod>) -> anyhow::Result<()> {
     // Create Pod blog
     info!("Creating Pod instance blog");
     let p: Pod = serde_json::from_value(json!({
@@ -53,7 +50,7 @@ async fn create_pod(pod: Pod, pods: Api<Pod>) -> anyhow::Result<()> {
     Ok(())
 }
 
-async fn delete_pod(podname: &str, pods: Api<Pod>) {
+pub async fn delete_pod(podname: &str, pods: Api<Pod>) {
     let dp = DeleteParams::default();
     pods.delete(podname, &dp).await.unwrap().map_left(|pdel| {
         assert_eq!(pdel.name_any(), podname);
