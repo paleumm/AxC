@@ -16,7 +16,8 @@ async fn main() -> anyhow::Result<()> {
     let client = Client::try_default().await?;
     let pods: Api<Pod> = Api::default_namespaced(client);
 
-    axc_controller::create_runtime(&pods).await.unwrap();
+    // axc_controller::create_runtime(&pods).await.unwrap();
+    axc_controller::delete_pod("blog", pods).await;
 
     Ok(())
 }
