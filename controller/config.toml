@@ -1,0 +1,4 @@
+path_to_write = "config/pv-user/generator/jgraph.json"
+path_to_pod_config = "config/pv/kube/pod_config.yaml"
+path_to_pvc_config = "config/pv/kube/pod_config.yaml"
+
